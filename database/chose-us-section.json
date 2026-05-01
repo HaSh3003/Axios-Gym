@@ -1,0 +1,26 @@
+{
+  "subtitle": "Why chose us?",
+  "title": "PUSH YOUR LIMITS FORWARD",
+  "items": [
+    {
+      "iconClass": "flaticon-034-stationary-bike",
+      "title": "Modern equipment",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut dolore facilisis."
+    },
+    {
+      "iconClass": "flaticon-033-juice",
+      "title": "Healthy nutrition plan",
+      "description": "Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis."
+    },
+    {
+      "iconClass": "flaticon-002-dumbell",
+      "title": "Proffesponal training plan",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut dolore facilisis."
+    },
+    {
+      "iconClass": "flaticon-014-heart-beat",
+      "title": "Unique to your needs",
+      "description": "Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "subtitle": "Our Team",
+  "title": "TRAIN WITH EXPERTS",
+  "appointmentLink": "#",
+  "appointmentLabel": "appointment",
+  "members": [
+    {
+      "image": "img/team/team-1.jpg",
+      "name": "Athart Rachel",
+      "role": "Gym Trainer"
+    },
+    {
+      "image": "img/team/team-2.jpg",
+      "name": "Athart Rachel",
+      "role": "Gym Trainer"
+    },
+    {
+      "image": "img/team/team-3.jpg",
+      "name": "Athart Rachel",
+      "role": "Gym Trainer"
+    },
+    {
+      "image": "img/team/team-4.jpg",
+      "name": "Athart Rachel",
+      "role": "Gym Trainer"
+    },
+    {
+      "image": "img/team/team-5.jpg",
+      "name": "Athart Rachel",
+      "role": "Gym Trainer"
+    },
+    {
+      "image": "img/team/team-6.jpg",
+      "name": "Athart Rachel",
+      "role": "Gym Trainer"
+    }
+  ]
+}
