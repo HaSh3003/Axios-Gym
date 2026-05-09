@@ -155,8 +155,6 @@
         .header-logo .mobile-img.axis-logo { width: auto; height: 42px; max-width: 210px; object-fit: contain; }
         .footer-brand-logo { background: transparent; text-decoration: none; color: inherit; display: inline-block; }
         .footer-brand-logo img { width: auto; height: 44px; max-width: 220px; object-fit: contain; display: block; background: transparent; }
-        a.demo-nav-disabled { cursor: not-allowed; opacity: 0.55; }
-        a.location-card-item.demo-nav-disabled { opacity: 1; }
         .location-card-item--region-inactive .pic-item > .in > img {
             filter: grayscale(1) brightness(0.92);
         }
@@ -838,74 +836,6 @@
                 <h2 class ="h3-style">SIGN UP FOR YOUR FREE DAY PASS TODAY!</h2>
             </div>
         <div class="form-fields-wrap">
-            <div class="form-group">
-                <div class="location-dropdown-wrap">
-                    <div class="location-dropdown location_dropdown-white" id="city_dropdown-white">
-                        <input id="hdnSelectCityLabel" type="hidden" value="SELECT LOCATION">
-                        <label class="location-label location_label" id="city_label">SELECT LOCATION</label>
-                        <ul class="location-item-group leadlocation-scrollbar-js Scroll-down">
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="ae" data-cityname="Abu Dhabi">
-                                        Abu Dhabi
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="ae" data-cityname="Al Ain">
-                                        Al Ain
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="ae" data-cityname="Dubai">
-                                        Dubai
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="ae" data-cityname="Sharjah">
-                                        Sharjah
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="bh" data-cityname="Muharraq">
-                                        Muharraq
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="bh" data-cityname="Saar">
-                                        Saar
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="sa" data-cityname="Al Khobar">
-                                        Al Khobar
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="sa" data-cityname="Dammam">
-                                        Dammam
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="sa" data-cityname="Jeddah">
-                                        Jeddah
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="sa" data-cityname="Madinah">
-                                        Madinah
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="sa" data-cityname="Riyadh">
-                                        Riyadh
-                                    </span>
-                                </li>
-                        </ul>
-                    </div>
-                    <span id="city-validation-error" class="location-validation-error error-message" data-valmsg-replace="true">
-                        <span>Please select location</span>
-                    </span>
-                </div>
-            </div>
 
             <div class="form-group">
                 <div class="location-dropdown-wrap">
@@ -949,7 +879,7 @@
 
             <div class="form-group">
                 <div class="umbraco-forms-field-wrapper">
-                    <input type="text" name="phone1" id="phone1" inputmode="numeric" class="form-control phone-space-width text text-transform-none" value="" data-val="true" data-val-regex="Please enter a valid number" data-regex="^[0-9]{9,12}$" placeholder="PHONE (eg 569462182)" data-val-required="Please enter your phone number">
+                    <input type="text" name="phone1" id="phone1" inputmode="numeric" class="form-control phone-space-width text text-transform-none" value="" data-val="true" data-val-regex="Please enter a valid number" data-regex="^[0-9]{9,12}$" placeholder="Phone Number" data-val-required="Please enter your phone number">
                     <span class="field-validation-valid" data-valmsg-for="phone1" data-valmsg-replace="true"></span>
                 </div>
             </div>
@@ -6327,28 +6257,6 @@ But Don't Just Take Our Word For It!</p>
                         }
                     }
                 });
-            });
-        })();
-    </script>
-    <script>
-        (function () {
-            function demoNavAllowed(href) {
-                if (href == null) return false;
-                var h = String(href).trim();
-                if (h === '#main-content') return true;
-                if (h.charAt(0) === '#') return true;
-                var path = h.split('#')[0].split('?')[0].replace(/^\.\//, '');
-                return path === 'index.html' || path === '';
-            }
-            document.addEventListener('click', function (e) {
-                var a = e.target.closest && e.target.closest('a[href]');
-                if (!a) return;
-                if (demoNavAllowed(a.getAttribute('href'))) return;
-                e.preventDefault();
-                e.stopPropagation();
-            }, true);
-            document.querySelectorAll('a[href]').forEach(function (a) {
-                if (!demoNavAllowed(a.getAttribute('href'))) a.classList.add('demo-nav-disabled');
             });
         })();
     </script>
