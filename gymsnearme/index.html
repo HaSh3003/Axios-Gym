@@ -726,72 +726,20 @@
     <input type="hidden" id="txtusecurrentloctaion" value="use current location" />
     <input type="hidden" id="locationdeniedmsg" value="Location access is currently blocked because you denied the permission request. Please enable location access in your browser settings to view nearby gyms" />
     <input type="hidden" id="selectlocationText" value="SELECT LOCATION" />
-    <section class="global-spacing sec-para-container map-new-tab-section location-map-section header-space global-bottom-md-space">
+    <section class="global-spacing sec-para-container map-new-tab-section location-map-section header-space global-bottom-md-space axis-single-map-embed">
         <div class="container">
             <div class="map-tab-main">
                 <div class="map-left">
-                    <div class="map-country-wrapper">
-                            <div class="btn-wrapper">
-                                <button type="button" class="cntr-btn cntrtouch-btn" data-langaugecode="ae" data-tabrel="mapregionbtn1"><img src="../media/mt5lna1y/uae-icon.svg" alt="GN-UAE" width="30" height="17" /> UAE</button>
-                            </div>
-                            <div class="btn-wrapper">
-                                <button type="button" class="cntr-btn cntrtouch-btn" data-langaugecode="bh" data-tabrel="mapregionbtn2"><img src="../media/f03l5sbh/bhr-flag-icon.svg" alt="GN-BHR" width="30" height="17" /> BHR</button>
-                            </div>
-                            <div class="btn-wrapper">
-                                <button type="button" class="cntr-btn cntrtouch-btn" data-langaugecode="sa" data-tabrel="mapregionbtn3"><img src="../media/cmkdha2u/ksa-icon.svg" alt="GN-KSA" width="30" height="17" /> KSA</button>
-                            </div>
+                    <div class="map-single-location-bar">
+                        <a href="https://www.google.com/maps/place/AXIS+SPORT+-+Personal+Training+%26+Gym+JBR/@25.0719747,55.1386437,15.16z/data=!4m14!1m7!3m6!1s0x3e5f13d08f7040ef:0xcd9fc50d3b1697bc!2sAXIS+SPORT+-+Personal+Training+%26+Gym+JBR!8m2!3d25.0744576!4d55.1314458!16s%2Fg%2F11y_9p0sv5!3m5!1s0x3e5f13d08f7040ef:0xcd9fc50d3b1697bc!8m2!3d25.0744576!4d55.1314458!16s%2Fg%2F11y_9p0sv5?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="map-single-location-bar__link">
+                            <img src="../public/svgs/noun-location-white.svg" alt="" width="23" height="20">
+                            <span>عرض الموقع على Google Maps</span>
+                        </a>
                     </div>
-                    <div class="map-dist-wrapper">
-                        <div class="map-dist-tab-wrap map-location_dropdown" id="region-cities">
-                            <div class="map-dist-tab">
-                                    <div class="location_dropdown">
-                                        <label class="location_label">SELECT LOCATION</label>
-                                        <ul class="Scroll-down map-location-scroll-js">
-                                                    <li class="ae">
-                                                        <button type="button" data-countrycode="ae" data-locationName="Abu Dhabi" class="map-dists-btn" data-tabrel="maptabsbtn1">Abu Dhabi</button>
-                                                    </li>
-                                                    <li class="ae">
-                                                        <button type="button" data-countrycode="ae" data-locationName="Al Ain" class="map-dists-btn" data-tabrel="maptabsbtn2">Al Ain</button>
-                                                    </li>
-                                                    <li class="ae">
-                                                        <button type="button" data-countrycode="ae" data-locationName="Dubai" class="map-dists-btn" data-tabrel="maptabsbtn3">Dubai</button>
-                                                    </li>
-                                                    <li class="ae">
-                                                        <button type="button" data-countrycode="ae" data-locationName="Sharjah" class="map-dists-btn" data-tabrel="maptabsbtn4">Sharjah</button>
-                                                    </li>
-                                                    <li class="bh">
-                                                        <button type="button" data-countrycode="bh" data-locationName="Muharraq" class="map-dists-btn" data-tabrel="maptabsbtn5">Muharraq</button>
-                                                    </li>
-                                                    <li class="bh">
-                                                        <button type="button" data-countrycode="bh" data-locationName="Saar" class="map-dists-btn" data-tabrel="maptabsbtn6">Saar</button>
-                                                    </li>
-                                                    <li class="sa">
-                                                        <button type="button" data-countrycode="sa" data-locationName="Al Khobar" class="map-dists-btn" data-tabrel="maptabsbtn7">Al Khobar</button>
-                                                    </li>
-                                                    <li class="sa">
-                                                        <button type="button" data-countrycode="sa" data-locationName="Dammam" class="map-dists-btn" data-tabrel="maptabsbtn8">Dammam</button>
-                                                    </li>
-                                                    <li class="sa">
-                                                        <button type="button" data-countrycode="sa" data-locationName="Jeddah" class="map-dists-btn" data-tabrel="maptabsbtn9">Jeddah</button>
-                                                    </li>
-                                                    <li class="sa">
-                                                        <button type="button" data-countrycode="sa" data-locationName="Madinah" class="map-dists-btn" data-tabrel="maptabsbtn10">Madinah</button>
-                                                    </li>
-                                                    <li class="sa">
-                                                        <button type="button" data-countrycode="sa" data-locationName="Riyadh" class="map-dists-btn" data-tabrel="maptabsbtn11">Riyadh</button>
-                                                    </li>
-                                        </ul>
-                                    </div>
-                            </div>
-                            <div class="map-dist-title d-none d-md-inline-block d-lg-none useCurrentLocation">
-                                <img src="../public/svgs/noun-location-white.svg" alt="noun-location-white" width="23" height="20"> <span class="usecurrent">use current location</span>
-                            </div>
-                        </div>
+                    <div id="region-cities" class="axis-map-loc-legacy-off" hidden aria-hidden="true">
+                        <div class="location_dropdown"><ul class="Scroll-down map-location-scroll-js"></ul></div>
                     </div>
                     <div class="title-filter-wrap">
-                        <div class="map-dist-title d-md-none d-lg-inline-block useCurrentLocation">
-                            <img src="../public/svgs/noun-location-white.svg" alt="noun-location-white" width="23" height="20"> <span class="usecurrent">use current location</span>
-                        </div>
                             <div class="map-filter">
                                 <button class="map-filter-clear btn">CLEAR ALL</button>
                                 <button class="map-dist-filter filter-count btn">Filter (<span></span>) </button>
@@ -5026,7 +4974,14 @@
                 <div class="map-right">
                     <div class="map-frame-group">
                         <div class="map-frame-box map-dist-frame-js">
-                            <div id='map' style='width:100%; height: 100%;'></div>
+                            <iframe
+                                class="axis-map-embed"
+                                title="AXIS SPORT - Personal Training &amp; Gym JBR"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                src="https://www.google.com/maps/place/AXIS+SPORT+-+Personal+Training+%26+Gym+JBR/@25.0719747,55.1386437,15.16z/data=!4m14!1m7!3m6!1s0x3e5f13d08f7040ef:0xcd9fc50d3b1697bc!2sAXIS+SPORT+-+Personal+Training+%26+Gym+JBR!8m2!3d25.0744576!4d55.1314458!16s%2Fg%2F11y_9p0sv5!3m5!1s0x3e5f13d08f7040ef:0xcd9fc50d3b1697bc!8m2!3d25.0744576!4d55.1314458!16s%2Fg%2F11y_9p0sv5?output=embed"
+                                allowfullscreen
+                            ></iframe>
                         </div>
                     </div>
                 </div>

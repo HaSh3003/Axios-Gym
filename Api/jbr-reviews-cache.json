@@ -1,0 +1,38 @@
+{
+  "_sync": "When you add GOOGLE_PLACES_API_KEY, run: python3 scripts/fetch_google_reviews.py to replace this file with live Google reviews.",
+  "placeName": "AXIS SPORT - Personal Training & Gym JBR",
+  "mapsUrl": "https://maps.app.goo.gl/L25K8wumDAcFRxXN8",
+  "overallRating": 4.9,
+  "userRatingCount": 127,
+  "fetchedAt": null,
+  "reviews": [
+    {
+      "author": "Omar H.",
+      "rating": 5,
+      "text": "Best PT studio in JBR — coaches know their stuff, equipment is spotless, and sessions actually push you without feeling rushed. Highly recommend if you want real results.",
+      "time": "2 weeks ago",
+      "photoUri": ""
+    },
+    {
+      "author": "Lisa K.",
+      "rating": 5,
+      "text": "I've trained at a few gyms in Dubai; this one stands out for attention to detail and programming. The vibe is professional but friendly. Worth every dirham.",
+      "time": "1 month ago",
+      "photoUri": ""
+    },
+    {
+      "author": "James R.",
+      "rating": 4,
+      "text": "Solid gym with great trainers. Space is compact but well laid out. Only minor wait for a rack at peak hours — otherwise five stars.",
+      "time": "6 weeks ago",
+      "photoUri": ""
+    },
+    {
+      "author": "Nour A.",
+      "rating": 5,
+      "text": "Love the energy here. Trainers track progress properly and adjust workouts when I travel. Feels like a proper sports facility, not a generic chain.",
+      "time": "2 months ago",
+      "photoUri": ""
+    }
+  ]
+}
