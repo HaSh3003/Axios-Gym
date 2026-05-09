@@ -1,0 +1,38 @@
+/* Shared with homepage: logo sizing + inactive location cards (uses CSS vars from client-stylesef75). */
+/* AXIS accent red — reinforces CTAs / highlights (aligned with client-stylesef75). */
+:root {
+    --secondary: #d12b2f;
+    --yellow-f4: #d12b2f;
+    --gnorange: #d12b2f;
+}
+
+.header-logo .desktop-img.axis-logo { width: auto; height: 48px; max-width: 240px; object-fit: contain; }
+.header-logo .mobile-img.axis-logo { width: auto; height: 42px; max-width: 210px; object-fit: contain; }
+.footer-brand-logo { background: transparent; text-decoration: none; color: inherit; display: inline-block; }
+.footer-brand-logo img { width: auto; height: 44px; max-width: 220px; object-fit: contain; display: block; background: transparent; }
+.location-card-item--region-inactive .pic-item > .in > img {
+    filter: grayscale(1) brightness(0.92);
+}
+.location-card-item--region-inactive .pic-item > .in:after {
+    opacity: 0.42;
+}
+.location-card-item--region-inactive .pic-item > .in:hover:before {
+    border-color: rgba(255, 255, 255, 0.85) !important;
+}
+.location-card-item--region-inactive .pic-item > .in:hover h3,
+.location-card-item--region-inactive .pic-item > .in:hover .gym-count {
+    color: var(--white) !important;
+}
+.location-card-item--region-inactive .pic-item > .in:hover span {
+    color: var(--white) !important;
+}
+.location-card-item--region-inactive .pic-item > .in:hover .gym-location-card-cta .card--btn span {
+    color: var(--primary) !important;
+}
+.location-card-item--region-inactive .pic-item > .in:hover .gym-location-card-cta .card--btn,
+.location-card-item--region-inactive .pic-item > .in .gym-location-card-cta .card--btn:hover {
+    background-color: var(--white) !important;
+}
+.location-card-item--region-inactive .pic-item > .in:hover .gym-location-card-cta .card--btn span {
+    color: var(--primary) !important;
+}
