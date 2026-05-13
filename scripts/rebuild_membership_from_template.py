@@ -299,10 +299,10 @@ FORM_BODY = """\
 
             <section class="ax-membership-page">
                 <div class="ax-container">
-                    <header class="ax-membership-hero">
+                    <div class="ax-membership-hero">
                         <h1>Become an <span class="ax-accent">AXIS</span> Member</h1>
                         <p>Fill in your details, pick a plan, and we'll take it from there.</p>
-                    </header>
+                    </div>
 
                     <form class="ax-membership-form" id="ax-membership-form" novalidate>
 
