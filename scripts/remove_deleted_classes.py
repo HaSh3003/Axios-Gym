@@ -39,8 +39,15 @@ REMOVED_CLASSES = [
 CLASSES_ALT = "|".join(re.escape(c) for c in REMOVED_CLASSES)
 
 # Match an href whose value (single- or double-quoted) ends with
-# fitness-classes/<one-of-removed>/index.html. Used inside larger patterns.
-HREF_FRAG = r"href=[\"'][^\"']*?fitness-classes/(?:" + CLASSES_ALT + r")/index\.html[\"']"
+# CLASS/index.html. Covers both the absolute form ".../fitness-classes/CLASS/index.html"
+# and the sibling form "../CLASS/index.html" used inside the fitness-classes folder.
+# The (?<![a-zA-Z0-9-]) lookbehind prevents matching inside compound names like
+# breathing-yoga-classes/... (where the char before "yoga" would be a hyphen).
+HREF_FRAG = (
+    r"href=[\"'][^\"']*?(?<![a-zA-Z0-9-])(?:"
+    + CLASSES_ALT
+    + r")/index\.html[\"']"
+)
 
 # Mobile menu item (multi-line). The <a> tag can have any attribute order
 # (e.g. class, title, href in site-header.html vs class, href in the prebuilt pages),
