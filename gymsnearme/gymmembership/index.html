@@ -702,9 +702,18 @@
                 }
                 .ax-plans-error { color: #b51f23; }
                 .ax-membership-category + .ax-membership-category {
-                    margin-top: 40px;
-                    padding-top: 36px;
-                    border-top: 1px solid #e8eaee;
+                    margin-top: 48px;
+                    padding-top: 40px;
+                    border-top: 2px solid #e8eaee;
+                }
+                .ax-membership-category {
+                    background: #fafbfc;
+                    border: 1px solid #e8eaee;
+                    border-radius: 16px;
+                    padding: 28px 24px 24px;
+                }
+                #ax-plans-root > .ax-membership-category:first-child {
+                    margin-top: 8px;
                 }
                 .ax-membership-category h2 {
                     display: flex;
@@ -1017,8 +1026,8 @@
 
             <script>
                 (function () {
-                    var MEMBERSHIP_API = 'https://axissportclub.com/wp-json/axis/v1/memberships';
-                    var MEMBERSHIP_API_FALLBACK = 'https://axissportclub.com/wp-json/wp/v2/Membership';
+                    var MEMBERSHIP_API = 'https://axissportclub.com/wp-json/wp/v2/membership?per_page=100';
+                    var MEMBERSHIP_API_FALLBACK = 'https://axissportclub.com/wp-json/axis/v1/memberships';
                     var TRAINEE_API = 'https://axissportclub.com/wp-json/axis/v1/trainee';
                     var plansRoot = document.getElementById('ax-plans-root');
                     var form = document.getElementById('ax-membership-form');
@@ -1064,6 +1073,10 @@
                         toastClose.addEventListener('click', hideAxToast);
                     }
 
+                    function sanitizePhone(value) {
+                        return String(value || '').replace(/\D/g, '');
+                    }
+
                     function escapeHtml(value) {
                         return String(value == null ? '' : value)
                             .replace(/&/g, '&amp;')
@@ -1081,11 +1094,19 @@
                         return '';
                     }
 
+                    var CATEGORY_ORDER = {
+                        'Session Packages': 1,
+                        'Program + Following Up': 2,
+                        'Membership Plans': 99
+                    };
+
                     function normalizeFeatures(value) {
                         if (Array.isArray(value)) {
                             return value.map(function (feature) {
                                 return String(feature || '').trim();
-                            }).filter(Boolean);
+                            }).filter(function (feature) {
+                                return feature && feature !== '.';
+                            });
                         }
                         if (typeof value === 'string' && value.trim()) {
                             try {
@@ -1113,12 +1134,23 @@
                         };
                     }
 
-                    function getCategoryName(item) {
-                        if (item.category) return item.category;
-                        if (item.title && item.title.rendered) {
-                            return String(item.title.rendered).replace(/<[^>]*>/g, '').trim();
+                    function inferCategoryFromPlan(item) {
+                        var duration = String(item.duration || '').toLowerCase();
+                        var time = String(item.time || '').toLowerCase();
+
+                        if (duration.indexOf('month') !== -1 || time.indexOf('program') !== -1) {
+                            return 'Program + Following Up';
+                        }
+                        if (duration.indexOf('session') !== -1 || time.indexOf('session') !== -1) {
+                            return 'Session Packages';
                         }
                         return 'Membership Plans';
+                    }
+
+                    function getCategoryName(item) {
+                        var category = String(item.category || '').trim();
+                        if (category) return category;
+                        return inferCategoryFromPlan(item);
                     }
 
                     function getPlanName(item) {
@@ -1190,6 +1222,19 @@
                                 groups.push(map[category]);
                             }
                             map[category].items.push(item);
+                        });
+
+                        groups.forEach(function (group) {
+                            group.items.sort(function (a, b) {
+                                return (parseFloat(a.price) || 0) - (parseFloat(b.price) || 0);
+                            });
+                        });
+
+                        groups.sort(function (a, b) {
+                            var ao = CATEGORY_ORDER[a.name] || 50;
+                            var bo = CATEGORY_ORDER[b.name] || 50;
+                            if (ao !== bo) return ao - bo;
+                            return a.name.localeCompare(b.name);
                         });
 
                         return groups;
@@ -1267,24 +1312,54 @@
                         renderPlans(groupPlans(plans));
                     }
 
+                    function mergeMembershipItems(primary, secondary) {
+                        var byId = Object.create(null);
+
+                        function apply(item) {
+                            var plan = normalizeMembershipItem(item);
+                            var key = String(plan.id);
+                            if (!byId[key]) {
+                                byId[key] = plan;
+                                return;
+                            }
+                            if (plan.features.length > byId[key].features.length) {
+                                byId[key].features = plan.features;
+                            }
+                            ['category', 'time', 'price', 'duration'].forEach(function (field) {
+                                if (!byId[key][field] && plan[field]) {
+                                    byId[key][field] = plan[field];
+                                }
+                            });
+                        }
+
+                        (primary || []).forEach(apply);
+                        (secondary || []).forEach(apply);
+                        return Object.keys(byId).map(function (id) {
+                            return byId[id];
+                        });
+                    }
+
                     function loadMembershipPlans() {
                         if (!plansRoot) return;
 
-                        fetchMembershipItems(MEMBERSHIP_API)
-                            .then(function (items) {
-                                if (!Array.isArray(items) || !items.length) throw new Error('empty');
-                                renderLoadedPlans(items);
+                        Promise.all([
+                            fetchMembershipItems(MEMBERSHIP_API).catch(function () { return []; }),
+                            fetchMembershipItems(MEMBERSHIP_API_FALLBACK).catch(function () { return []; })
+                        ])
+                            .then(function (results) {
+                                var wpItems = Array.isArray(results[0]) ? results[0] : [];
+                                var axisItems = Array.isArray(results[1]) ? results[1] : [];
+                                var source = wpItems.length ? wpItems : axisItems;
+
+                                if (!source.length) throw new Error('empty');
+
+                                return enrichFromSelfLinks(source).then(function (enriched) {
+                                    return mergeMembershipItems(enriched, axisItems.length && wpItems.length ? axisItems : []);
+                                });
                             })
+                            .then(renderLoadedPlans)
                             .catch(function () {
-                                fetchMembershipItems(MEMBERSHIP_API_FALLBACK)
-                                    .then(function (items) {
-                                        if (!Array.isArray(items) || !items.length) throw new Error('empty');
-                                        return enrichFromSelfLinks(items);
-                                    })
-                                    .then(renderLoadedPlans)
-                                    .catch(function () {
-                                        showPlansError('Unable to load membership plans. Please refresh and try again.');
-                                    });
+                                showPlansError('Unable to load membership plans. Please refresh and try again.');
                             });
                     }
 
@@ -1305,10 +1380,21 @@
 
                         var firstName = (form.querySelector('#firstName') || {}).value || '';
                         var lastName = (form.querySelector('#lastName') || {}).value || '';
+                        var phoneInput = form.querySelector('#phone');
+                        var phone = sanitizePhone(phoneInput && phoneInput.value);
+
+                        if (!phone) {
+                            showAxToast('Please enter a valid phone number.', 'error');
+                            if (phoneInput) phoneInput.focus();
+                            return;
+                        }
+
+                        if (phoneInput) phoneInput.value = phone;
+
                         var payload = {
                             username: (firstName + ' ' + lastName).trim(),
                             email: (form.querySelector('#email') || {}).value || '',
-                            phone: (form.querySelector('#phone') || {}).value || '',
+                            phone: phone,
                             gender: (form.querySelector('#gender') || {}).value || '',
                             date_of_birth: (form.querySelector('#dob') || {}).value || '',
                             package: parseInt(planInput.value, 10)

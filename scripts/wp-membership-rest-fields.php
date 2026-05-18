@@ -2,7 +2,7 @@
 /**
  * Plugin Name: AXIS REST API
  * Description: Membership plans + trainee bookings for the AXIS website.
- * Version: 1.2.1
+ * Version: 1.2.2
  */
 
 if (!defined('ABSPATH')) {
@@ -11,10 +11,49 @@ if (!defined('ABSPATH')) {
 
 function axis_membership_get_field($post_id, $field)
 {
+    if (function_exists('pods')) {
+        $pod = pods('membership', $post_id);
+        if ($pod && $pod->exists()) {
+            $pods_value = $pod->field($field);
+            if ($pods_value !== null && $pods_value !== false && $pods_value !== '') {
+                if (!(is_array($pods_value) && count($pods_value) === 0)) {
+                    return $pods_value;
+                }
+            }
+        }
+    }
+
     if (function_exists('get_field')) {
         $acf_value = get_field($field, $post_id);
         if ($acf_value !== null && $acf_value !== false && $acf_value !== '') {
             return $acf_value;
+        }
+    }
+
+    if ($field === 'features') {
+        $all_meta = get_post_meta($post_id, 'features', false);
+        if (is_array($all_meta) && count($all_meta) > 0) {
+            $flattened = array();
+
+            foreach ($all_meta as $entry) {
+                if (is_array($entry)) {
+                    foreach ($entry as $part) {
+                        $part = trim((string) $part);
+                        if ($part !== '') {
+                            $flattened[] = $part;
+                        }
+                    }
+                } else {
+                    $entry = trim((string) $entry);
+                    if ($entry !== '') {
+                        $flattened[] = $entry;
+                    }
+                }
+            }
+
+            if (count($flattened) > 0) {
+                return array_values(array_unique($flattened));
+            }
         }
     }
 
@@ -86,7 +125,11 @@ add_action('rest_api_init', function () {
             $field,
             array(
                 'get_callback' => function ($post) use ($field) {
-                    return axis_membership_get_field((int) $post['id'], $field);
+                    $value = axis_membership_get_field((int) $post['id'], $field);
+                    if ($field === 'features') {
+                        return axis_membership_normalize_features($value);
+                    }
+                    return $value;
                 },
                 'schema' => array(
                     'type' => 'string',

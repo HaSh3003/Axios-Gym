@@ -150,6 +150,7 @@
         </noscript>
         <link rel="stylesheet" href="../dist/css/client-stylesef75.css?v=sgie15IPAOBT2CKW4MKUJ67yc04ju47HY7wOjFqlPlE" />
         <link id="axis-branding-css" rel="stylesheet" href="../components/axis-branding.css" />
+        <link rel="stylesheet" href="../components/axis-lead-form.css" />
 
     <script>
         window.addEventListener('load', function() {
@@ -634,89 +635,11 @@
                 <h2 class ="h3-style">SIGN UP FOR YOUR FREE DAY PASS TODAY!</h2>
             </div>
         <div class="form-fields-wrap">
-            <div class="form-group">
-                <div class="location-dropdown-wrap">
-                    <div class="location-dropdown location_dropdown-white" id="city_dropdown-white">
-                        <input id="hdnSelectCityLabel" type="hidden" value="SELECT LOCATION">
-                        <label class="location-label location_label" id="city_label">SELECT LOCATION</label>
-                        <ul class="location-item-group leadlocation-scrollbar-js Scroll-down">
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="ae" data-cityname="Abu Dhabi">
-                                        Abu Dhabi
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="ae" data-cityname="Al Ain">
-                                        Al Ain
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="ae" data-cityname="Dubai">
-                                        Dubai
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="ae" data-cityname="Sharjah">
-                                        Sharjah
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="bh" data-cityname="Muharraq">
-                                        Muharraq
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="bh" data-cityname="Saar">
-                                        Saar
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="sa" data-cityname="Al Khobar">
-                                        Al Khobar
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="sa" data-cityname="Dammam">
-                                        Dammam
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="sa" data-cityname="Jeddah">
-                                        Jeddah
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="sa" data-cityname="Madinah">
-                                        Madinah
-                                    </span>
-                                </li>
-                                <li class="location-item loc-item-box-js each-tab-js">
-                                    <span class="location-text loc-item-text-js" data-languageCode="sa" data-cityname="Riyadh">
-                                        Riyadh
-                                    </span>
-                                </li>
-                        </ul>
-                    </div>
-                    <span id="city-validation-error" class="location-validation-error error-message" data-valmsg-replace="true">
-                        <span>Please select location</span>
-                    </span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="location-dropdown-wrap">
-                    <div class="location-classes u-text-left" style="display: none;">
-                        <div class="location-dropdown location_dropdown-white" id="location_dropdown-white123">
-                            <input id="hdnSelectLocationLabel" type="hidden" value="SELECT AXIS">
-                            <label class="location-label location_label" id="location_label123">SELECT AXIS</label>
-                            <div class="location-item-group Scroll-down subleadlocation-scrollbar-js">
-                                <ul id="locations-li"></ul>
-                            </div>
-                        </div>
-                        <span id="location-validation-error" class="location-validation-error error-message" data-valmsg-replace="true">
-                            <span>Please select Axis</span>
-                        </span>
-                    </div>
+            <div class="form-group axis-lead-package-group">
+                <div class="umbraco-forms-field-wrapper">
+                    <select id="axis-lead-package" name="axis_package" class="form-control text axis-lead-package-select" required>
+                        <option value="">SELECT PACKAGE</option>
+                    </select>
                 </div>
             </div>
 
@@ -771,30 +694,7 @@
     <div class="form-thank-you-msg freetrial-thankyou" id="submitmsg">
         <div class="in">
             <p class="u-h2">Thank You, <span id="submittedUserName"></span></p>
-            <p><strong>WE WILL BE IN TOUCH ASAP </strong></p>
-<p><strong>GIVE YOUR FRIENDS A FREE DAY PASS. </strong></p>
-<p><strong>COPY AND SEND THEM THIS LINK AND WIN BIG PRIZES!</strong></p>
-            
-    <div class="thnk-social-share-main">
-        <p class ="thnk-refer-title"></p>
-        <input type="hidden" class="copyiedText" value="Copied">
-        <div class="link-share-box">
-            <input type="text" class="referlink" value="https://www.gymnation.com/friends" readonly="" aria-label="Referral Link">
-            <button type="button" class="CopyToClip">Copy Link</button>
-        </div>
-        <div class="thnk-msg-social-share">
-                <a class="social-share-btn wp-btn" href="https://api.whatsapp.com/send?text=Hi!%0a%0aWant+a+FREE+DAY+PASS+at+Axis%3f%0a%0aEnter+your+information+on+this+link%2c+and+we+will+be+in+touch+ASAP%3a%0a%0ahttps%3a%2f%2fwww.gymnation.com%2ffriends">
-                    <img  alt="GN-Whatsapp"  src="../public/svgs/whatsapp.svg"  width="20" height="20" > WHATSAPP
-                </a>
-                <a class="social-share-btn eml-btn" href="mailto:?subject=FREE AXIS DAY PASS&amp;body=Hi! &#xA;&#xA;Want a FREE DAY PASS at Axis? &#xA;&#xA;Enter your information on this link, and we will be in touch ASAP: &#xA;&#xA;https://www.gymnation.com/friends">
-                    <img  alt="GN-Email"  src="../public/svgs/email-icon.svg"  width="20" height="20" > EMAIL
-                </a>
-                <a class="social-share-btn native-share-btn native-share" href="javascript:void(0)" data-url="https://www.gymnation.com/friends" role="button">
-                    <img  alt="GN-Share"  src="../public/svgs/native-share-icon.svg"  width="20" height="20" > SHARE VIA
-                </a>
-        </div>
-    </div>
-
+            <p><strong>WE WILL BE IN TOUCH ASAP</strong></p>
         </div>
     </div>
 
@@ -949,26 +849,7 @@
                     <div class="in">
                         <p class="u-h3">Thank You, <span id="daypasssubmittedUserName"></span></p>
                         <p>YOU WILL RECEIVE A CALL FROM EITHER OUR UK (+44) CALL CENTRE OR A UAE (+971) OR KSA (+966) MOBILE NUMBER</p>
-                        
-    <div class="thnk-social-share-main">
-        <p class ="thnk-refer-title"></p>
-        <input type="hidden" class="copyiedText" value="Copied">
-        <div class="link-share-box">
-            <input type="text" class="referlink" value="https://www.gymnation.com/friends" readonly="" aria-label="Referral Link">
-            <button type="button" class="CopyToClip">Copy Link</button>
-        </div>
-        <div class="thnk-msg-social-share">
-                <a class="social-share-btn wp-btn" href="https://api.whatsapp.com/send?text=Hi!%0a%0aWant+a+FREE+DAY+PASS+at+Axis%3f%0a%0aEnter+your+information+on+this+link%2c+and+we+will+be+in+touch+ASAP%3a%0a%0ahttps%3a%2f%2fwww.gymnation.com%2ffriends">
-                    <img  alt="GN-Whatsapp"  src="../public/svgs/whatsapp.svg"  width="20" height="20" > WHATSAPP
-                </a>
-                <a class="social-share-btn eml-btn" href="mailto:?subject=FREE AXIS DAY PASS&amp;body=Hi! &#xA;&#xA;Want a FREE DAY PASS at Axis? &#xA;&#xA;Enter your information on this link, and we will be in touch ASAP: &#xA;&#xA;https://www.gymnation.com/friends">
-                    <img  alt="GN-Email"  src="../public/svgs/email-icon.svg"  width="20" height="20" > EMAIL
-                </a>
-                <a class="social-share-btn native-share-btn native-share" href="javascript:void(0)" data-url="https://www.gymnation.com/friends" role="button">
-                    <img  alt="GN-Share"  src="../public/svgs/native-share-icon.svg"  width="20" height="20" > SHARE VIA
-                </a>
-        </div>
-    </div>
+</div>
 
                     </div>
                 </div>
@@ -5349,11 +5230,11 @@
 <H3 class ="h4tag same-height">PAY MONTHLY</H3>                            </a>
                         </div>
                         <div class="col-sm-3 col-xs-3">
-                            <a class="featured-item" title="OPEN 24/7">
+                            <a class="featured-item" title="OPEN 17 HOURS">
                                 <div class="featured-icon">
                                     <img  alt="GN-Featured"  src="../media/n35bqdwu/24-7.svg" loading="lazy" decoding="async" width="84" height="107">
                                 </div>
-<H3 class ="h4tag same-height">OPEN 24/7</H3>                            </a>
+<H3 class ="h4tag same-height">OPEN 17 HOURS</H3>                            </a>
                         </div>
                         <div class="col-sm-6 col-xs-6">
                             <a class="featured-item" title="400&#x2B; FREE FITNESS CLASSES">
@@ -5497,26 +5378,7 @@
                     <div class="in">
                         <p class="u-h3">Thank You, <span class="submittedUserName"></span></p>
                         <p>YOU WILL RECEIVE A CALL FROM EITHER OUR UK (+44) CALL CENTRE OR A UAE (+971) OR KSA (+966) MOBILE NUMBER</p>
-                        
-    <div class="thnk-social-share-main">
-        <p class ="thnk-refer-title"></p>
-        <input type="hidden" class="copyiedText" value="Copied">
-        <div class="link-share-box">
-            <input type="text" class="referlink" value="https://www.gymnation.com/friends" readonly="" aria-label="Referral Link">
-            <button type="button" class="CopyToClip">Copy Link</button>
-        </div>
-        <div class="thnk-msg-social-share">
-                <a class="social-share-btn wp-btn" href="https://api.whatsapp.com/send?text=Hi!%0a%0aWant+a+FREE+DAY+PASS+at+Axis%3f%0a%0aEnter+your+information+on+this+link%2c+and+we+will+be+in+touch+ASAP%3a%0a%0ahttps%3a%2f%2fwww.gymnation.com%2ffriends">
-                    <img  alt="GN-Whatsapp"  src="../public/svgs/whatsapp.svg"  width="20" height="20" > WHATSAPP
-                </a>
-                <a class="social-share-btn eml-btn" href="mailto:?subject=FREE AXIS DAY PASS&amp;body=Hi! &#xA;&#xA;Want a FREE DAY PASS at Axis? &#xA;&#xA;Enter your information on this link, and we will be in touch ASAP: &#xA;&#xA;https://www.gymnation.com/friends">
-                    <img  alt="GN-Email"  src="../public/svgs/email-icon.svg"  width="20" height="20" > EMAIL
-                </a>
-                <a class="social-share-btn native-share-btn native-share" href="javascript:void(0)" data-url="https://www.gymnation.com/friends" role="button">
-                    <img  alt="GN-Share"  src="../public/svgs/native-share-icon.svg"  width="20" height="20" > SHARE VIA
-                </a>
-        </div>
-    </div>
+</div>
 
                     </div>
                 </div>
@@ -6055,27 +5917,7 @@
                     <div class="form-thank-you-msg freetrial-thankyou" id="aftersubmitmsg">
                         <div class="in">
                             <p class="u-h3">Thank You, <span id="submittedUserNameNewFT"></span></p>
-                            <p><strong>WE WILL BE IN TOUCH ASAP </strong></p>
-<p><strong>GIVE YOUR FRIENDS A FREE DAY PASS. </strong></p>
-<p><strong>COPY AND SEND THEM THIS LINK AND WIN BIG PRIZES!</strong></p>
-                            <div class="thnk-social-share-main">
-<p class ="thnk-refer-title">Share a FREE DAY PASS with your friends:</p>                                    <input type="hidden" id="ftncopyiedText" value="Copied">
-                                    <div class="link-share-box">
-                                        <input type="text" class="referlink" value="https://www.gymnation.com/friends" id="ftnreferlink" readonly="" aria-label="Referral Link">
-                                        <button type="button" id="FTNCopyToClip">Copy Link</button>
-                                    </div>
-                                    <div class="thnk-msg-social-share">
-                                            <a class="social-share-btn wp-btn" href="https://api.whatsapp.com/send?text=Hi!%0a%0aWant+a+FREE+DAY+PASS+at+Axis%3f%0a%0aEnter+your+information+on+this+link%2c+and+we+will+be+in+touch+ASAP%3a%0a%0ahttps%3a%2f%2fwww.gymnation.com%2ffriends">
-                                                <img  alt="GN-Whatsapp" class="WHATSAPP" src="../public/svgs/whatsapp.svg" loading="lazy" decoding="async" width="20" height="20" > WHATSAPP
-                                            </a>
-                                            <a class="social-share-btn eml-btn" href="mailto:?subject=FREE AXIS DAY PASS&amp;body=Hi! &#xA;&#xA;Want a FREE DAY PASS at Axis? &#xA;&#xA;Enter your information on this link, and we will be in touch ASAP: &#xA;&#xA;https://www.gymnation.com/friends">
-                                                <img  alt="GN-Email" class="EMAIL" src="../public/svgs/email-icon.svg" loading="lazy" decoding="async" width="20" height="20" > EMAIL
-                                            </a>
-                                            <a id="ftn-native-share" class="social-share-btn" href="javascript:void(0)" data-url="https://www.gymnation.com/friends" role="button">
-                                                <img  alt="GN-Share" class="SHARE VIA" src="../public/svgs/native-share-icon.svg" loading="lazy" decoding="async" width="20" height="20" > SHARE VIA
-                                            </a>
-                                    </div>
-                            </div>
+                            <p><strong>WE WILL BE IN TOUCH ASAP</strong></p>
                         </div>
                     </div>
                 </div>
@@ -6171,6 +6013,7 @@
             });
         })();
     </script>
+    <script src="../components/axis-lead-form.js" defer></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"79ec72c181cd4970a3adb2357dd812b8","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 
