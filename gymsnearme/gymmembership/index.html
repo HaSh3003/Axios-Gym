@@ -568,12 +568,23 @@
 </header>
 <main>
             <style>
+                .panel-wrapper header + main {
+                    padding-top: 5.5rem !important;
+                }
                 .ax-membership-page {
                     background: #f4f5f7;
-                    padding: 56px 0 80px;
+                    padding: 3rem 0 5rem;
                     min-height: calc(100vh - 200px);
                     font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
                     color: #111;
+                }
+                @media (max-width: 767px) {
+                    .panel-wrapper header + main {
+                        padding-top: 4.5rem !important;
+                    }
+                    .ax-membership-page {
+                        padding-top: 2rem;
+                    }
                 }
                 .ax-membership-page * { box-sizing: border-box; }
                 .ax-membership-page .ax-container {
@@ -643,7 +654,7 @@
                 @media (max-width: 600px) { .ax-grid { grid-template-columns: 1fr; } }
                 .ax-field { display: flex; flex-direction: column; }
                 .ax-field-full { grid-column: 1 / -1; }
-                .ax-field label {
+                .ax-field > label {
                     font-size: 12px;
                     font-weight: 700;
                     color: #444;
@@ -678,6 +689,33 @@
                     outline: none;
                     border-color: #d12b2f;
                     box-shadow: 0 0 0 4px rgba(209, 43, 47, .12);
+                }
+                .ax-plans-root { min-height: 120px; }
+                .ax-plans-loading,
+                .ax-plans-error,
+                .ax-plans-empty {
+                    text-align: center;
+                    color: #666;
+                    font-size: 15px;
+                    padding: 28px 12px;
+                    margin: 0;
+                }
+                .ax-plans-error { color: #b51f23; }
+                .ax-membership-category + .ax-membership-category {
+                    margin-top: 40px;
+                    padding-top: 36px;
+                    border-top: 1px solid #e8eaee;
+                }
+                .ax-membership-category h2 {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    font-size: 20px;
+                    font-weight: 800;
+                    color: #0d0d0d;
+                    margin: 0 0 22px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
                 }
                 .ax-plans {
                     display: grid;
@@ -782,21 +820,41 @@
                     transform: rotate(-45deg);
                 }
                 .ax-plan-featured .ax-plan-card { border-color: #d12b2f; }
+                .ax-form-actions {
+                    margin-top: 40px;
+                    padding-top: 36px;
+                    border-top: 1px solid #e8eaee;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    clear: both;
+                    position: relative;
+                    z-index: 2;
+                }
                 .ax-checkbox {
                     display: flex;
-                    gap: 12px;
                     align-items: flex-start;
-                    font-size: 14px;
-                    color: #444;
-                    cursor: pointer;
-                    margin-bottom: 24px;
-                    line-height: 1.5;
+                    gap: 12px;
+                    margin: 0;
                 }
                 .ax-checkbox input {
-                    width: 18px; height: 18px;
-                    margin-top: 2px;
+                    width: 18px;
+                    height: 18px;
+                    margin: 3px 0 0;
                     accent-color: #d12b2f;
                     flex-shrink: 0;
+                }
+                .ax-checkbox label {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #444;
+                    line-height: 1.5;
+                    text-transform: none;
+                    letter-spacing: normal;
+                    margin: 0;
+                    cursor: pointer;
+                    position: static;
+                    display: block;
                 }
                 .ax-submit-btn {
                     display: block;
@@ -825,7 +883,74 @@
                     line-height: 1.5;
                 }
                 .ax-success { background: #1e9e3f !important; }
+                .ax-form-error { color: #b51f23 !important; font-weight: 600; }
+                .ax-toast {
+                    position: fixed;
+                    top: 5.5rem;
+                    left: 50%;
+                    z-index: 10050;
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 12px;
+                    width: min(560px, calc(100% - 32px));
+                    margin: 0;
+                    padding: 16px 44px 16px 18px;
+                    border-radius: 12px;
+                    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
+                    font-size: 15px;
+                    line-height: 1.45;
+                    font-weight: 600;
+                    transform: translate(-50%, -140%);
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+                }
+                .ax-toast.is-visible {
+                    transform: translate(-50%, 0);
+                    opacity: 1;
+                    pointer-events: auto;
+                }
+                .ax-toast--success {
+                    background: #0f3d22;
+                    color: #fff;
+                    border-left: 4px solid #2ecc71;
+                }
+                .ax-toast--error {
+                    background: #4a1214;
+                    color: #fff;
+                    border-left: 4px solid #d12b2f;
+                }
+                .ax-toast--info {
+                    background: #1a1a1a;
+                    color: #fff;
+                    border-left: 4px solid #d12b2f;
+                }
+                .ax-toast-text { margin: 0; flex: 1; }
+                .ax-toast-close {
+                    position: absolute;
+                    top: 10px;
+                    right: 12px;
+                    width: 28px;
+                    height: 28px;
+                    border: none;
+                    background: transparent;
+                    color: inherit;
+                    font-size: 22px;
+                    line-height: 1;
+                    cursor: pointer;
+                    opacity: 0.85;
+                    padding: 0;
+                }
+                .ax-toast-close:hover { opacity: 1; }
+                @media (max-width: 768px) {
+                    .ax-toast { top: 4.5rem; font-size: 14px; }
+                }
             </style>
+
+            <div id="ax-toast" class="ax-toast" role="alert" aria-live="polite" hidden>
+                <p class="ax-toast-text" id="ax-toast-text"></p>
+                <button type="button" class="ax-toast-close" id="ax-toast-close" aria-label="Close">&times;</button>
+            </div>
 
             <section class="ax-membership-page">
                 <div class="ax-container">
@@ -856,121 +981,35 @@
                                     <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+971 ..." required>
                                 </div>
                                 <div class="ax-field">
-                                    <label for="dob">Date of Birth</label>
-                                    <input id="dob" name="dob" type="date">
+                                    <label for="dob">Date of Birth *</label>
+                                    <input id="dob" name="dob" type="date" required>
                                 </div>
                                 <div class="ax-field">
-                                    <label for="gender">Gender</label>
-                                    <select id="gender" name="gender">
+                                    <label for="gender">Gender *</label>
+                                    <select id="gender" name="gender" required>
                                         <option value="">Select…</option>
                                         <option>Male</option>
                                         <option>Female</option>
                                         <option>Prefer not to say</option>
                                     </select>
                                 </div>
-                                <div class="ax-field ax-field-full">
-                                    <label for="city">Preferred Branch *</label>
-                                    <select id="city" name="city" required>
-                                        <option value="">Choose a branch…</option>
-                                        <optgroup label="Dubai">
-                                            <option>Dubai – Al Quoz</option>
-                                            <option>Dubai – Bur Dubai</option>
-                                            <option>Dubai – Downtown</option>
-                                            <option>Dubai – Mirdif</option>
-                                            <option>Dubai – Motor City</option>
-                                            <option>Dubai – Silicon Oasis</option>
-                                        </optgroup>
-                                        <optgroup label="Abu Dhabi">
-                                            <option>Abu Dhabi – Khalidiyah Mall</option>
-                                            <option>Abu Dhabi – Mushrif Mall</option>
-                                            <option>Abu Dhabi – Reem Island</option>
-                                        </optgroup>
-                                        <optgroup label="Sharjah">
-                                            <option>Sharjah – Mega Mall</option>
-                                            <option>Sharjah – Al Zahia</option>
-                                            <option>Sharjah – Sharjah Central</option>
-                                        </optgroup>
-                                        <optgroup label="Other">
-                                            <option>Al Ain – Makani Al Ain Mall</option>
-                                        </optgroup>
-                                    </select>
-                                </div>
+                             
                             </div>
                         </section>
+                        <br>
+                        <div id="ax-plans-root" class="ax-plans-root">
+                            <p class="ax-plans-loading">Loading membership plans…</p>
+                        </div>
 
-                        <section class="ax-form-section">
-                            <h2><span class="ax-step">2</span> Choose Your Membership</h2>
-                            <div class="ax-plans">
-
-                                <label class="ax-plan">
-                                    <input type="radio" name="plan" value="monthly" required>
-                                    <div class="ax-plan-card">
-                                        <span class="ax-plan-tag">Most Flexible</span>
-                                        <h3 class="ax-plan-name">Monthly</h3>
-                                        <div class="ax-plan-price">AED 199<span>/ month</span></div>
-                                        <ul class="ax-plan-features">
-                                            <li>Access to your home club</li>
-                                            <li>Unlimited group classes</li>
-                                            <li>Cancel anytime</li>
-                                        </ul>
-                                    </div>
-                                </label>
-
-                                <label class="ax-plan">
-                                    <input type="radio" name="plan" value="quarterly" required>
-                                    <div class="ax-plan-card">
-                                        <span class="ax-plan-tag">Save 8%</span>
-                                        <h3 class="ax-plan-name">Quarterly</h3>
-                                        <div class="ax-plan-price">AED 549<span>/ 3 months</span></div>
-                                        <ul class="ax-plan-features">
-                                            <li>Access to all UAE clubs</li>
-                                            <li>Unlimited classes</li>
-                                            <li>1 free guest pass / month</li>
-                                        </ul>
-                                    </div>
-                                </label>
-
-                                <label class="ax-plan ax-plan-featured">
-                                    <input type="radio" name="plan" value="annual" required>
-                                    <div class="ax-plan-card">
-                                        <span class="ax-plan-tag">Best Value</span>
-                                        <h3 class="ax-plan-name">Annual</h3>
-                                        <div class="ax-plan-price">AED 1,799<span>/ year</span></div>
-                                        <ul class="ax-plan-features">
-                                            <li>All clubs (UAE / KSA / BHR)</li>
-                                            <li>Unlimited classes + HYROX</li>
-                                            <li>2 free PT sessions</li>
-                                            <li>30-day free freeze</li>
-                                        </ul>
-                                    </div>
-                                </label>
-
-                                <label class="ax-plan">
-                                    <input type="radio" name="plan" value="day-pass" required>
-                                    <div class="ax-plan-card">
-                                        <span class="ax-plan-tag">Try It Out</span>
-                                        <h3 class="ax-plan-name">Day Pass</h3>
-                                        <div class="ax-plan-price">AED 75<span>/ day</span></div>
-                                        <ul class="ax-plan-features">
-                                            <li>One-day full access</li>
-                                            <li>Try before you commit</li>
-                                            <li>Valid at any branch</li>
-                                        </ul>
-                                    </div>
-                                </label>
-
+                        <div class="ax-form-actions">
+                            <div class="ax-checkbox">
+                                <input id="ax-terms" type="checkbox" name="terms" required>
+                                <label for="ax-terms">I agree to the Terms &amp; Conditions and the Privacy Policy of AXIS.</label>
                             </div>
-                        </section>
-
-                        <section class="ax-form-section">
-                            <label class="ax-checkbox">
-                                <input type="checkbox" name="terms" required>
-                                <span>I agree to the Terms &amp; Conditions and the Privacy Policy of AXIS.</span>
-                            </label>
 
                             <button type="submit" class="ax-submit-btn" id="ax-submit-btn">Join AXIS Now</button>
                             <p class="ax-form-note" id="ax-form-note">An AXIS team member will reach out to confirm your registration.</p>
-                        </section>
+                        </div>
 
                     </form>
                 </div>
@@ -978,23 +1017,344 @@
 
             <script>
                 (function () {
+                    var MEMBERSHIP_API = 'https://axissportclub.com/wp-json/axis/v1/memberships';
+                    var MEMBERSHIP_API_FALLBACK = 'https://axissportclub.com/wp-json/wp/v2/Membership';
+                    var TRAINEE_API = 'https://axissportclub.com/wp-json/axis/v1/trainee';
+                    var plansRoot = document.getElementById('ax-plans-root');
                     var form = document.getElementById('ax-membership-form');
+                    var toast = document.getElementById('ax-toast');
+                    var toastText = document.getElementById('ax-toast-text');
+                    var toastClose = document.getElementById('ax-toast-close');
+                    var toastTimer = null;
+
+                    function showAxToast(message, type) {
+                        if (!toast || !toastText) return;
+                        type = type || 'info';
+                        clearTimeout(toastTimer);
+                        toast.hidden = false;
+                        toast.className = 'ax-toast ax-toast--' + type + ' is-visible';
+                        toastText.textContent = message;
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        if (type !== 'info') {
+                            toastTimer = setTimeout(hideAxToast, type === 'success' ? 8000 : 10000);
+                        }
+                    }
+
+                    function hideAxToast() {
+                        if (!toast) return;
+                        clearTimeout(toastTimer);
+                        toast.classList.remove('is-visible');
+                        setTimeout(function () {
+                            toast.hidden = true;
+                        }, 350);
+                    }
+
+                    function resetAxForm() {
+                        if (!form) return;
+                        form.reset();
+                        var btn = document.getElementById('ax-submit-btn');
+                        if (btn) {
+                            btn.disabled = false;
+                            btn.textContent = 'Join AXIS Now';
+                            btn.classList.remove('ax-success');
+                        }
+                    }
+
+                    if (toastClose) {
+                        toastClose.addEventListener('click', hideAxToast);
+                    }
+
+                    function escapeHtml(value) {
+                        return String(value == null ? '' : value)
+                            .replace(/&/g, '&amp;')
+                            .replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;')
+                            .replace(/"/g, '&quot;')
+                            .replace(/'/g, '&#39;');
+                    }
+
+                    function pickField(item, field) {
+                        if (!item) return '';
+                        if (item[field] != null && item[field] !== '') return item[field];
+                        if (item.acf && item.acf[field] != null && item.acf[field] !== '') return item.acf[field];
+                        if (item.meta && item.meta[field] != null && item.meta[field] !== '') return item.meta[field];
+                        return '';
+                    }
+
+                    function normalizeFeatures(value) {
+                        if (Array.isArray(value)) {
+                            return value.map(function (feature) {
+                                return String(feature || '').trim();
+                            }).filter(Boolean);
+                        }
+                        if (typeof value === 'string' && value.trim()) {
+                            try {
+                                var parsed = JSON.parse(value);
+                                if (Array.isArray(parsed)) return normalizeFeatures(parsed);
+                            } catch (err) {}
+                            return value.split(/\r?\n|,/).map(function (part) {
+                                return part.trim();
+                            }).filter(Boolean);
+                        }
+                        return [];
+                    }
+
+                    function normalizeMembershipItem(item) {
+                        return {
+                            id: item.id,
+                            status: item.status || 'publish',
+                            category: String(pickField(item, 'category') || '').trim(),
+                            time: String(pickField(item, 'time') || '').trim(),
+                            price: String(pickField(item, 'price') || '').trim(),
+                            duration: String(pickField(item, 'duration') || '').trim(),
+                            features: normalizeFeatures(pickField(item, 'features')),
+                            title: item.title || null,
+                            slug: item.slug || ''
+                        };
+                    }
+
+                    function getCategoryName(item) {
+                        if (item.category) return item.category;
+                        if (item.title && item.title.rendered) {
+                            return String(item.title.rendered).replace(/<[^>]*>/g, '').trim();
+                        }
+                        return 'Membership Plans';
+                    }
+
+                    function getPlanName(item) {
+                        if (item.time) return item.time;
+                        if (item.title && item.title.rendered) {
+                            return String(item.title.rendered).replace(/<[^>]*>/g, '').trim();
+                        }
+                        return '';
+                    }
+
+                    function hasPlanContent(item) {
+                        return !!(item && (item.time || item.price || (item.features && item.features.length)));
+                    }
+
+                    function isPublishedPlan(item) {
+                        return item && item.id && (!item.status || item.status === 'publish');
+                    }
+
+                    function fetchMembershipItems(url) {
+                        return fetch(url).then(function (response) {
+                            if (!response.ok) throw new Error('fetch failed');
+                            return response.json();
+                        });
+                    }
+
+                    function enrichFromSelfLinks(items) {
+                        var needsEnrich = items.filter(function (item) {
+                            return isPublishedPlan(item) && !hasPlanContent(normalizeMembershipItem(item));
+                        });
+
+                        if (!needsEnrich.length) {
+                            return Promise.resolve(items);
+                        }
+
+                        return Promise.all(needsEnrich.map(function (item) {
+                            var selfLink = item._links && item._links.self && item._links.self[0] && item._links.self[0].href;
+                            if (!selfLink) return Promise.resolve(item);
+
+                            return fetch(selfLink)
+                                .then(function (response) {
+                                    if (!response.ok) return item;
+                                    return response.json();
+                                })
+                                .catch(function () {
+                                    return item;
+                                });
+                        })).then(function (enrichedItems) {
+                            var byId = Object.create(null);
+                            items.forEach(function (item) {
+                                byId[String(item.id)] = item;
+                            });
+                            enrichedItems.forEach(function (item) {
+                                byId[String(item.id)] = item;
+                            });
+                            return Object.keys(byId).map(function (id) {
+                                return byId[id];
+                            });
+                        });
+                    }
+
+                    function groupPlans(items) {
+                        var groups = [];
+                        var map = Object.create(null);
+
+                        items.forEach(function (item) {
+                            var category = getCategoryName(item);
+                            if (!map[category]) {
+                                map[category] = { name: category, items: [] };
+                                groups.push(map[category]);
+                            }
+                            map[category].items.push(item);
+                        });
+
+                        return groups;
+                    }
+
+                    function renderPlanCard(item, isFirst) {
+                        var features = Array.isArray(item.features) ? item.features : [];
+                        var featuresHtml = features.map(function (feature) {
+                            return '<li>' + escapeHtml(feature) + '</li>';
+                        }).join('');
+
+                        var duration = item.duration ? String(item.duration).trim() : '';
+                        var durationHtml = duration
+                            ? '<span>/' + escapeHtml(duration) + '</span>'
+                            : '';
+
+                        return ''
+                            + '<label class="ax-plan">'
+                            + '<input type="radio" name="plan" value="' + escapeHtml(item.id) + '"' + (isFirst ? ' required' : '') + '>'
+                            + '<div class="ax-plan-card">'
+                            + '<h3 class="ax-plan-name">' + escapeHtml(getPlanName(item)) + '</h3>'
+                            + '<div class="ax-plan-price">AED ' + escapeHtml(item.price || '') + durationHtml + '</div>'
+                            + '<ul class="ax-plan-features">' + featuresHtml + '</ul>'
+                            + '</div>'
+                            + '</label>';
+                    }
+
+                    function renderPlans(groups) {
+                        if (!groups.length) {
+                            plansRoot.innerHTML = '<p class="ax-plans-empty">No membership plans are available right now.</p>';
+                            return;
+                        }
+
+                        var html = '';
+                        var firstPlanMarked = false;
+
+                        groups.forEach(function (group, index) {
+                            var heading = '<h2>';
+                            if (index === 0) {
+                                heading += '<span class="ax-step">2</span> ';
+                            }
+                            heading += escapeHtml(group.name) + '</h2>';
+
+                            html += '<section class="ax-form-section ax-membership-category">';
+                            html += heading;
+                            html += '<div class="ax-plans">';
+
+                            group.items.forEach(function (item) {
+                                var isFirst = !firstPlanMarked;
+                                html += renderPlanCard(item, isFirst);
+                                if (isFirst) firstPlanMarked = true;
+                            });
+
+                            html += '</div></section>';
+                        });
+
+                        plansRoot.innerHTML = html;
+                    }
+
+                    function showPlansError(message) {
+                        plansRoot.innerHTML = '<p class="ax-plans-error">' + escapeHtml(message) + '</p>';
+                    }
+
+                    function renderLoadedPlans(items) {
+                        var plans = items
+                            .filter(isPublishedPlan)
+                            .map(normalizeMembershipItem)
+                            .filter(hasPlanContent);
+
+                        if (!plans.length) {
+                            plansRoot.innerHTML = '<p class="ax-plans-empty">Plans found on WordPress, but plan details are not exposed in the API yet. Upload <code>scripts/wp-membership-rest-fields.php</code> as a plugin on axissportclub.com, then refresh this page.</p>';
+                            return;
+                        }
+
+                        renderPlans(groupPlans(plans));
+                    }
+
+                    function loadMembershipPlans() {
+                        if (!plansRoot) return;
+
+                        fetchMembershipItems(MEMBERSHIP_API)
+                            .then(function (items) {
+                                if (!Array.isArray(items) || !items.length) throw new Error('empty');
+                                renderLoadedPlans(items);
+                            })
+                            .catch(function () {
+                                fetchMembershipItems(MEMBERSHIP_API_FALLBACK)
+                                    .then(function (items) {
+                                        if (!Array.isArray(items) || !items.length) throw new Error('empty');
+                                        return enrichFromSelfLinks(items);
+                                    })
+                                    .then(renderLoadedPlans)
+                                    .catch(function () {
+                                        showPlansError('Unable to load membership plans. Please refresh and try again.');
+                                    });
+                            });
+                    }
+
+                    loadMembershipPlans();
+
                     if (!form) return;
                     form.addEventListener('submit', function (e) {
                         e.preventDefault();
                         if (!form.checkValidity()) { form.reportValidity(); return; }
+
+                        var planInput = form.querySelector('input[name="plan"]:checked');
                         var btn = document.getElementById('ax-submit-btn');
-                        var note = document.getElementById('ax-form-note');
+
+                        if (!planInput) {
+                            showAxToast('Please select a membership plan before submitting.', 'error');
+                            return;
+                        }
+
+                        var firstName = (form.querySelector('#firstName') || {}).value || '';
+                        var lastName = (form.querySelector('#lastName') || {}).value || '';
+                        var payload = {
+                            username: (firstName + ' ' + lastName).trim(),
+                            email: (form.querySelector('#email') || {}).value || '',
+                            phone: (form.querySelector('#phone') || {}).value || '',
+                            gender: (form.querySelector('#gender') || {}).value || '',
+                            date_of_birth: (form.querySelector('#dob') || {}).value || '',
+                            package: parseInt(planInput.value, 10)
+                        };
+
                         if (btn) {
-                            btn.textContent = 'Submitted \u2713';
-                            btn.classList.add('ax-success');
                             btn.disabled = true;
+                            btn.textContent = 'Submitting…';
+                            btn.classList.remove('ax-success');
                         }
-                        if (note) {
-                            note.textContent = 'Thank you! Your request has been received. An AXIS team member will contact you shortly.';
-                            note.style.color = '#1e9e3f';
-                            note.style.fontWeight = '600';
-                        }
+                        showAxToast('Sending your registration…', 'info');
+
+                        fetch(TRAINEE_API, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                            body: JSON.stringify(payload)
+                        })
+                            .then(function (res) {
+                                return res.json().then(function (data) {
+                                    return { ok: res.ok, data: data };
+                                });
+                            })
+                            .then(function (result) {
+                                if (!result.ok) {
+                                    var code = result.data && result.data.code;
+                                    if (code === 'rest_no_route') {
+                                        throw new Error('Booking service is not enabled on WordPress. Install and activate the AXIS REST API plugin (scripts/axis-rest-api.zip).');
+                                    }
+                                    var msg = (result.data && result.data.message) || 'Could not submit your booking. Please try again.';
+                                    throw new Error(msg);
+                                }
+                                resetAxForm();
+                                showAxToast('Thank you! Your request has been received. An AXIS team member will contact you shortly.', 'success');
+                            })
+                            .catch(function (err) {
+                                if (btn) {
+                                    btn.disabled = false;
+                                    btn.textContent = 'Join AXIS Now';
+                                    btn.classList.remove('ax-success');
+                                }
+                                var errMsg = err.message || 'Something went wrong. Please try again.';
+                                if (errMsg === 'Failed to fetch') {
+                                    errMsg = 'Could not reach the server. Check your connection and try again.';
+                                }
+                                showAxToast(errMsg, 'error');
+                            });
                     });
                 })();
             </script>
