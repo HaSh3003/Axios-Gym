@@ -20,6 +20,14 @@
         document.head.appendChild(branding);
     }
 
+    if (!document.getElementById('axis-whatsapp-contact-js')) {
+        var wa = document.createElement('script');
+        wa.id = 'axis-whatsapp-contact-js';
+        wa.src = componentsBase + 'axis-whatsapp-contact.js';
+        wa.defer = true;
+        document.head.appendChild(wa);
+    }
+
     function resolveUrl(raw) {
         if (raw == null || raw === '') return raw;
         var s = String(raw).trim();

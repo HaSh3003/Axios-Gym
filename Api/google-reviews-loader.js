@@ -1,8 +1,11 @@
 /**
- * MEMBERS REVIEWS — Swiper + Api/jbr-reviews-cache.json; optional live fetch via Places API when __AXIS_GOOGLE_PLACES_KEY__ is set.
+ * MEMBERS REVIEWS — Google summary (AXIS Sport) + WordPress member review cards.
+ * Supports multiple sections via [data-axis-reviews].
  */
 (function () {
     var MAPS_URL = "https://maps.app.goo.gl/L25K8wumDAcFRxXN8";
+    var WP_REVIEWS_URL =
+        "https://axissportclub.com/wp-json/wp/v2/members_reviews?per_page=100&status=publish";
     var CACHE_URL = "Api/jbr-reviews-cache.json";
     var QUOTE_SRC = "public/svgs/review-quote.svg";
 
@@ -33,25 +36,55 @@
         return html;
     }
 
-    function normalizeFromPlacesDetails(details) {
-        var list = [];
-        var reviews = details.reviews || [];
-        for (var i = 0; i < reviews.length; i++) {
-            var r = reviews[i];
-            var auth = r.authorAttribution || {};
-            var textObj = r.text || r.originalText || {};
-            var text = typeof textObj === "object" ? textObj.text || "" : "";
-            text = String(text).trim();
-            if (!text) continue;
-            list.push({
-                author: auth.displayName || "Google user",
-                rating: Number(r.rating) || 0,
-                text: text,
-                time: r.relativePublishTimeDescription || "",
-                photoUri: auth.photoUri || "",
-            });
+    function pickWpField(item, field) {
+        if (!item) return "";
+        if (item[field] != null && item[field] !== "") return item[field];
+        if (item.acf && item.acf[field] != null && item.acf[field] !== "") return item.acf[field];
+        if (item.meta && item.meta[field] != null && item.meta[field] !== "") return item.meta[field];
+        return "";
+    }
+
+    function formatReviewDate(value) {
+        var raw = String(value || "").trim();
+        if (!raw) return "";
+        var d = new Date(raw);
+        if (isNaN(d.getTime())) return raw;
+        return d.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+        });
+    }
+
+    function normalizeFromWpItem(item) {
+        var text = String(pickWpField(item, "comment_")).trim();
+        if (!text) return null;
+        var refer = String(pickWpField(item, "refer")).trim() || "Member";
+        return {
+            author: String(pickWpField(item, "name_")).trim() || "Member",
+            rating: Math.max(0, Math.min(5, Number(pickWpField(item, "stars_")) || 5)),
+            text: text,
+            time: formatReviewDate(pickWpField(item, "data_")),
+            photoUri: "",
+            source: refer,
+        };
+    }
+
+    function normalizeFromWpList(items) {
+        if (!Array.isArray(items)) return [];
+        var out = [];
+        for (var i = 0; i < items.length; i++) {
+            var row = normalizeFromWpItem(items[i]);
+            if (row) out.push(normalizeRow(row));
         }
-        return list;
+        return out;
+    }
+
+    function fetchWpReviews() {
+        return fetch(WP_REVIEWS_URL, { mode: "cors" }).then(function (res) {
+            if (!res.ok) throw new Error("wp reviews " + res.status);
+            return res.json();
+        });
     }
 
     function normalizeRow(r) {
@@ -61,6 +94,7 @@
             text: String(r.text || "").trim(),
             time: String(r.time || "").trim(),
             photoUri: String(r.photoUri || "").trim(),
+            source: String(r.source || "Member").trim() || "Member",
         };
     }
 
@@ -83,7 +117,8 @@
 
     function renderCardInner(r) {
         var av = avatarHtml(r.photoUri);
-        var topTitle = r.time || "Google Maps";
+        var source = r.source || "Member";
+        var topTitle = r.time || source;
         return (
             '<div class="review-item axis-review-card">' +
             '<div class="review-top">' +
@@ -106,31 +141,26 @@
             "</span>" +
             "<h3>" +
             escapeHtml(r.author) +
-            '<span>Google Maps</span></h3></div>' +
+            "<span>" +
+            escapeHtml(source) +
+            "</span></h3></div>" +
             ratingStars(r.rating) +
             "</div>" +
             "</div>"
         );
     }
 
-    function avgFromReviews(reviews) {
-        if (!reviews.length) return null;
-        var s = 0;
-        for (var i = 0; i < reviews.length; i++) s += Number(reviews[i].rating) || 0;
-        return Math.round((s / reviews.length) * 10) / 10;
-    }
-
-    function renderSummary(cache, reviews) {
-        var maps = escapeHtml(cache.mapsUrl || MAPS_URL);
-        var name = escapeHtml(cache.placeName || "AXIS SPORT JBR");
+    function renderSummary(googleCache) {
+        var maps = escapeHtml(googleCache.mapsUrl || MAPS_URL);
+        var name = escapeHtml(googleCache.placeName || "AXIS SPORT - Personal Training & Gym JBR");
         var overall =
-            cache.overallRating != null && cache.overallRating !== ""
-                ? Number(cache.overallRating)
-                : avgFromReviews(reviews);
+            googleCache.overallRating != null && googleCache.overallRating !== ""
+                ? Number(googleCache.overallRating)
+                : null;
         var count =
-            cache.userRatingCount != null && cache.userRatingCount !== ""
-                ? Number(cache.userRatingCount)
-                : reviews.length;
+            googleCache.userRatingCount != null && googleCache.userRatingCount !== ""
+                ? Number(googleCache.userRatingCount)
+                : null;
         var stars = overall != null && !isNaN(overall) ? ratingStars(Math.round(overall), 28) : "";
         var scoreNum =
             overall != null && !isNaN(overall)
@@ -138,9 +168,7 @@
                 : "";
         var countLabel =
             count && !isNaN(count)
-                ? '<span class="axis-reviews-count">' +
-                  count +
-                  " Google reviews</span>"
+                ? '<span class="axis-reviews-count">' + count + " Google reviews</span>"
                 : "";
 
         return (
@@ -163,7 +191,7 @@
         );
     }
 
-    function buildSwiperHtml(reviews, cache) {
+    function buildCardsSwiperHtml(reviews) {
         var slides = "";
         for (var i = 0; i < reviews.length; i++) {
             slides +=
@@ -172,7 +200,6 @@
                 "</div></div>";
         }
         return (
-            renderSummary(cache, reviews) +
             '<div class="swiper axis-reviews-swiper">' +
             '<div class="swiper-wrapper">' +
             slides +
@@ -223,7 +250,7 @@
                 var pid = places[0].id;
                 var h2 = {
                     "X-Goog-Api-Key": apiKey,
-                    "X-Goog-FieldMask": "reviews,displayName,id,rating,userRatingCount",
+                    "X-Goog-FieldMask": "displayName,id,rating,userRatingCount",
                 };
                 return fetch("https://places.googleapis.com/v1/places/" + encodeURIComponent(pid), {
                     headers: h2,
@@ -236,10 +263,7 @@
             });
     }
 
-
-    function mergeLiveCache(details, prev) {
-        var reviews = normalizeFromPlacesDetails(details);
-        var mapped = reviews.map(normalizeRow);
+    function mergeGoogleSummary(details, prev) {
         var dn = details.displayName;
         var placeName =
             typeof dn === "object" && dn
@@ -254,7 +278,6 @@
                     ? Number(details.userRatingCount)
                     : prev.userRatingCount,
             fetchedAt: new Date().toISOString(),
-            reviews: mapped,
         };
     }
 
@@ -262,17 +285,17 @@
         var el = root.querySelector(".axis-reviews-swiper");
         if (!el || typeof Swiper === "undefined") return;
 
-        if (window.__axisReviewsSwiper) {
+        if (el.axisSwiperInstance) {
             try {
-                window.__axisReviewsSwiper.destroy(true, true);
+                el.axisSwiperInstance.destroy(true, true);
             } catch (e) {}
-            window.__axisReviewsSwiper = null;
+            el.axisSwiperInstance = null;
         }
 
         var n = el.querySelectorAll(".swiper-slide").length;
         var enableLoop = n > 3;
 
-        window.__axisReviewsSwiper = new Swiper(el, {
+        el.axisSwiperInstance = new Swiper(el, {
             slidesPerView: 1,
             spaceBetween: 20,
             loop: enableLoop,
@@ -296,8 +319,8 @@
         });
     }
 
-    function paint(container, cache, reviews) {
-        var list = reviews.map(normalizeRow).filter(function (r) {
+    function paint(container, googleCache, cardReviews) {
+        var list = cardReviews.map(normalizeRow).filter(function (r) {
             return r.text.length > 0;
         });
         if (!list.length) {
@@ -305,45 +328,23 @@
                 {
                     author: "AXIS",
                     rating: 5,
-                    text: "Add a Google Places API key in index.html or run scripts/fetch_google_reviews.py (with Api/.env) to load live Google reviews here.",
+                    text: "Member reviews will appear here once published on the website.",
                     time: "",
                     photoUri: "",
+                    source: "AXIS",
                 },
             ];
         }
         container.innerHTML =
-            '<div class="axis-reviews-root">' + buildSwiperHtml(list, cache) + "</div>";
+            '<div class="axis-reviews-root">' +
+            renderSummary(googleCache) +
+            buildCardsSwiperHtml(list) +
+            "</div>";
         container.classList.remove("is-loading");
 
         requestAnimationFrame(function () {
             runSwiper(container);
         });
-    }
-
-    function loadFromPlacesThenPaint(container, cache, key) {
-        return fetchReviewsFromPlaces(key)
-            .then(function (details) {
-                var merged = mergeLiveCache(details, cache);
-                var rows = (merged.reviews || []).map(normalizeRow).filter(function (r) {
-                    return r.text.length > 0;
-                });
-                if (!rows.length && (cache.reviews || []).length) {
-                    var cached = (cache.reviews || []).map(normalizeRow).filter(function (r) {
-                        return r.text.length > 0;
-                    });
-                    if (cached.length) {
-                        paint(container, merged, cached);
-                        return;
-                    }
-                }
-                paint(container, merged, rows);
-            })
-            .catch(function () {
-                var cached = (cache.reviews || []).map(normalizeRow).filter(function (r) {
-                    return r.text.length > 0;
-                });
-                paint(container, cache, cached.length ? cached : []);
-            });
     }
 
     function getPlacesKey() {
@@ -352,45 +353,79 @@
             : "";
     }
 
-    function init() {
-        var container = document.getElementById("reviewdata");
-        if (!container) return;
-        container.classList.add("axis-reviews-root-wrap", "is-loading");
-
-        var emptyCache = {
+    function defaultGoogleCache() {
+        return {
             placeName: "AXIS SPORT - Personal Training & Gym JBR",
             mapsUrl: MAPS_URL,
             overallRating: null,
             userRatingCount: null,
-            reviews: [],
         };
+    }
 
-        fetchJson(CACHE_URL)
+    function loadGoogleSummary() {
+        var base = defaultGoogleCache();
+        return fetchJson(CACHE_URL)
             .then(function (cache) {
+                var summary = {
+                    placeName: cache.placeName || base.placeName,
+                    mapsUrl: cache.mapsUrl || base.mapsUrl,
+                    overallRating: cache.overallRating,
+                    userRatingCount: cache.userRatingCount,
+                };
                 var key = getPlacesKey();
-                var cachedRows = (cache.reviews || []).map(normalizeRow).filter(function (r) {
-                    return r.text.length > 0;
-                });
-
-                if (key) {
-                    loadFromPlacesThenPaint(container, cache, key).catch(function () {
-                        paint(container, cache, cachedRows.length ? cachedRows : []);
+                if (!key) return summary;
+                return fetchReviewsFromPlaces(key)
+                    .then(function (details) {
+                        return mergeGoogleSummary(details, summary);
+                    })
+                    .catch(function () {
+                        return summary;
                     });
-                    return;
-                }
-
-                paint(container, cache, cachedRows);
             })
             .catch(function () {
                 var key = getPlacesKey();
-                if (key) {
-                    loadFromPlacesThenPaint(container, emptyCache, key).catch(function () {
-                        paint(container, emptyCache, []);
+                if (!key) return base;
+                return fetchReviewsFromPlaces(key)
+                    .then(function (details) {
+                        return mergeGoogleSummary(details, base);
+                    })
+                    .catch(function () {
+                        return base;
                     });
-                    return;
-                }
-                paint(container, emptyCache, []);
             });
+    }
+
+    function loadCardReviews() {
+        return fetchWpReviews()
+            .then(function (items) {
+                return normalizeFromWpList(items);
+            })
+            .catch(function () {
+                return [];
+            });
+    }
+
+    function initContainer(container, googleCache, cardReviews) {
+        container.classList.add("axis-reviews-root-wrap", "is-loading");
+        paint(container, googleCache, cardReviews);
+    }
+
+    function init() {
+        var containers = document.querySelectorAll("[data-axis-reviews]");
+        if (!containers.length) {
+            var legacy = document.getElementById("reviewdata");
+            if (legacy) legacy.setAttribute("data-axis-reviews", "");
+            containers = document.querySelectorAll("[data-axis-reviews]");
+        }
+        if (!containers.length) return;
+
+        Promise.all([loadGoogleSummary(), loadCardReviews()]).then(function (results) {
+            var googleCache = results[0];
+            var cardReviews = results[1];
+            for (var i = 0; i < containers.length; i++) {
+                initContainer(containers[i], googleCache, cardReviews);
+            }
+        });
     }
 
     if (document.readyState === "loading") {
