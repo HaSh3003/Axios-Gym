@@ -148,6 +148,22 @@ input.search-input:focus-visible,
     background-color: #fff !important;
 }
 
+/* Mobile menu — ensure hamburger is clickable above overlays */
+header .menu-trigger {
+    position: relative;
+    z-index: 1002;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body.mobile-menu-open {
+    overflow: hidden;
+}
+
+body.mobile-menu-open header .menu.mobile-view {
+    display: block !important;
+}
+
 .header-logo .desktop-img.axis-logo { width: auto; height: 48px; max-width: 240px; object-fit: contain; }
 .header-logo .mobile-img.axis-logo { width: auto; height: 42px; max-width: 210px; object-fit: contain; }
 

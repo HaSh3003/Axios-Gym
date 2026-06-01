@@ -53,9 +53,29 @@
         root.parentNode.replaceChild(link, root);
     }
 
+    function loadMobileMenuFix() {
+        if (window.__AXIS_MOBILE_MENU__ || window.__AXIS_MOBILE_MENU_LOADING__) return;
+        window.__AXIS_MOBILE_MENU_LOADING__ = true;
+        var script = document.currentScript || document.getElementById('axis-whatsapp-contact-js');
+        var base = 'components/';
+        if (script && script.src) {
+            base = script.src.replace(/axis-whatsapp-contact\.js(\?.*)?$/i, '');
+        } else {
+            var branding = document.getElementById('axis-branding-css');
+            if (branding && branding.href) {
+                base = branding.href.replace(/axis-branding\.css(\?.*)?$/i, '');
+            }
+        }
+        var tag = document.createElement('script');
+        tag.src = base + 'axis-mobile-menu.js';
+        tag.defer = true;
+        document.head.appendChild(tag);
+    }
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
     }
+    loadMobileMenuFix();
 })();
