@@ -1,7 +1,14 @@
 (function () {
-    var TRAINEE_API = 'https://axissportclub.com/wp-json/axis/v1/trainee';
-    var MEMBERSHIP_API = 'https://axissportclub.com/wp-json/wp/v2/membership?per_page=100';
-    var MEMBERSHIP_API_FALLBACK = 'https://axissportclub.com/wp-json/axis/v1/memberships';
+    var api = window.AXIS_API;
+    var TRAINEE_API = api
+        ? api.url('/axis/v1/trainee')
+        : 'https://admin.axissportclub.com/index.php?rest_route=/axis/v1/trainee';
+    var MEMBERSHIP_API = api
+        ? api.url('/wp/v2/membership?per_page=100')
+        : 'https://admin.axissportclub.com/index.php?rest_route=/wp/v2/membership&per_page=100';
+    var MEMBERSHIP_API_FALLBACK = api
+        ? api.url('/axis/v1/memberships')
+        : 'https://admin.axissportclub.com/index.php?rest_route=/axis/v1/memberships';
     var toastTimer = null;
     var toastEl = null;
     var toastTextEl = null;

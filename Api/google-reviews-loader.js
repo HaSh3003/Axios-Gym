@@ -5,8 +5,13 @@
 (function () {
     var MAPS_URL = "https://maps.app.goo.gl/L25K8wumDAcFRxXN8";
     var WP_REVIEWS_URL =
-        "https://axissportclub.com/wp-json/wp/v2/members_reviews?per_page=100&status=publish";
-    var CACHE_URL = "Api/jbr-reviews-cache.json";
+        window.AXIS_API && window.AXIS_API.url
+            ? window.AXIS_API.url("/wp/v2/members_reviews?per_page=100&status=publish")
+            : "https://admin.axissportclub.com/index.php?rest_route=/wp/v2/members_reviews&per_page=100&status=publish";
+    var CACHE_URL =
+        window.AXIS_API && window.AXIS_API.assetUrl
+            ? window.AXIS_API.assetUrl("Api/jbr-reviews-cache.json")
+            : "Api/jbr-reviews-cache.json";
     var QUOTE_SRC = "public/svgs/review-quote.svg";
 
     function escapeHtml(s) {

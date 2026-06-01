@@ -1015,11 +1015,19 @@
                 </div>
             </section>
 
+            <script src="../../Api/axis-api-config.js"></script>
             <script>
                 (function () {
-                    var MEMBERSHIP_API = 'https://axissportclub.com/wp-json/wp/v2/membership?per_page=100';
-                    var MEMBERSHIP_API_FALLBACK = 'https://axissportclub.com/wp-json/axis/v1/memberships';
-                    var TRAINEE_API = 'https://axissportclub.com/wp-json/axis/v1/trainee';
+                    var api = window.AXIS_API;
+                    var MEMBERSHIP_API = api
+                        ? api.url('/wp/v2/membership?per_page=100')
+                        : 'https://admin.axissportclub.com/index.php?rest_route=/wp/v2/membership&per_page=100';
+                    var MEMBERSHIP_API_FALLBACK = api
+                        ? api.url('/axis/v1/memberships')
+                        : 'https://admin.axissportclub.com/index.php?rest_route=/axis/v1/memberships';
+                    var TRAINEE_API = api
+                        ? api.url('/axis/v1/trainee')
+                        : 'https://admin.axissportclub.com/index.php?rest_route=/axis/v1/trainee';
                     var plansRoot = document.getElementById('ax-plans-root');
                     var form = document.getElementById('ax-membership-form');
                     var toast = document.getElementById('ax-toast');
@@ -1296,7 +1304,7 @@
                             .filter(hasPlanContent);
 
                         if (!plans.length) {
-                            plansRoot.innerHTML = '<p class="ax-plans-empty">Plans found on WordPress, but plan details are not exposed in the API yet. Upload <code>scripts/wp-membership-rest-fields.php</code> as a plugin on axissportclub.com, then refresh this page.</p>';
+                            plansRoot.innerHTML = '<p class="ax-plans-empty">Plans found on WordPress, but plan details are not exposed in the API yet. Upload <code>scripts/wp-membership-rest-fields.php</code> as a plugin on admin.axissportclub.com, then refresh this page.</p>';
                             return;
                         }
 

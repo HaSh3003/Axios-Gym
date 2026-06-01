@@ -7,7 +7,10 @@ import json
 import urllib.request
 from pathlib import Path
 
-API_URL = "https://axissportclub.com/wp-json/wp/v2/Membership?per_page=100"
+API_URL = (
+    "https://admin.axissportclub.com/index.php?rest_route=/wp/v2/membership"
+    "&per_page=100"
+)
 ROOT = Path(__file__).resolve().parent.parent
 TARGET = ROOT / "Api" / "membership-plans.json"
 FIELDS = ("id", "category", "time", "price", "duration", "features")

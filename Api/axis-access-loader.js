@@ -3,7 +3,10 @@
  * Updates [data-axis-why] featured cards via [data-axis-access-key].
  */
 (function () {
-    var API_URL = "https://axissportclub.com/wp-json/wp/v2/we__access?per_page=100&status=publish";
+    var API_URL =
+        window.AXIS_API && window.AXIS_API.url
+            ? window.AXIS_API.url("/wp/v2/we__access?per_page=100&status=publish")
+            : "https://admin.axissportclub.com/index.php?rest_route=/wp/v2/we__access&per_page=100&status=publish";
 
     var LABELS = {
         locations: function (v) {
