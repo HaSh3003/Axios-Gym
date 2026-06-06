@@ -63,26 +63,50 @@
     }
 
     function init() {
-        var trigger = qs('header .menu-trigger');
-        var menu = qs('header .menu.mobile-view');
-        if (!trigger || !menu) return;
+        var bound = false;
 
-        if (menu.style.display !== 'block') menu.style.display = 'none';
+        function bindOnce() {
+            if (bound) return true;
 
-        trigger.addEventListener('click', function (e) {
-            e.preventDefault();
-            toggleMenu();
-        });
+            var trigger = qs('header .menu-trigger');
+            var menu = qs('header .menu.mobile-view');
+            if (!trigger || !menu) return false;
 
-        qsa('header .child-trigger', menu).forEach(function (el) {
-            el.addEventListener('click', onChildTriggerClick);
-        });
+            bound = true;
 
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && document.body.classList.contains('mobile-menu-open')) {
-                setMenuOpen(false);
+            if (menu.style.display !== 'block') menu.style.display = 'none';
+
+            trigger.addEventListener('click', function (e) {
+                e.preventDefault();
+                toggleMenu();
+            });
+
+            // Bind submenu toggles inside the mobile menu only.
+            qsa('.child-trigger', menu).forEach(function (el) {
+                el.addEventListener('click', onChildTriggerClick);
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && document.body.classList.contains('mobile-menu-open')) {
+                    setMenuOpen(false);
+                }
+            });
+
+            return true;
+        }
+
+        // Some pages inject the header asynchronously after DOMContentLoaded.
+        // Retry binding for a short window so the hamburger works on all pages.
+        if (bindOnce()) return;
+
+        var attempts = 0;
+        var maxAttempts = 30; // ~4.5s at 150ms intervals
+        var interval = setInterval(function () {
+            attempts += 1;
+            if (bindOnce() || attempts >= maxAttempts) {
+                clearInterval(interval);
             }
-        });
+        }, 150);
     }
 
     if (document.readyState === 'loading') {
