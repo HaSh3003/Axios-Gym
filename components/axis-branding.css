@@ -328,6 +328,11 @@ a.axis-whatsapp-float.gnwhatsapp-btn:focus-visible {
     object-position: center 35%;
 }
 
+/* Hero torn strip: legacy mobile CSS swaps to a yellow PNG — keep AXIS red on all breakpoints */
+.main-banner-about--form::before {
+    background-image: url("../dist/assets/images/city-banner-shape2.webp") !important;
+}
+
 /* Hero line — "Welcome to AXIS" (Home + About), simple style + colors */
 .main-banner-about .axis-hero-welcome {
     display: block;
@@ -506,6 +511,18 @@ a.axis-whatsapp-float.gnwhatsapp-btn:focus-visible {
             0 4px 8px rgba(2, 42, 58, 0.08),
             0 24px 48px rgba(2, 42, 58, 0.16),
             0 48px 80px rgba(2, 42, 58, 0.12);
+    }
+}
+
+/* Mobile: Locations opens gymsnearme directly — no country/city submenu */
+@media (max-width: 1199px) {
+    header .menu.mobile-view .hs-menu-wrapper > ul > .menu-item.has-submenu > a.menu-item--link[title="Locations"] {
+        padding-right: 16px !important;
+    }
+
+    header .menu.mobile-view .hs-menu-wrapper > ul > .menu-item.has-submenu > a.menu-item--link[title="Locations"] + .child-trigger,
+    header .menu.mobile-view .hs-menu-wrapper > ul > .menu-item.has-submenu > a.menu-item--link[title="Locations"] + .child-trigger + .submenu-wrapper {
+        display: none !important;
     }
 }
 
@@ -1147,4 +1164,18 @@ header > .container {
     .axis-transformation-item:hover img {
         transform: none;
     }
+}
+
+/* Footer partner logos: transparent PNGs on dark footer */
+footer .fsupport-logos .partners-logo {
+    background: transparent !important;
+}
+
+footer .fsupport-logos .partners-logo img {
+    background: transparent !important;
+    mix-blend-mode: lighten;
+}
+
+footer .fsupport-logos .partners-logo img[alt="Optimum Nutrition"] {
+    mix-blend-mode: normal;
 }

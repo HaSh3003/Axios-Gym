@@ -40,6 +40,20 @@
         setMenuOpen(!document.body.classList.contains('mobile-menu-open'));
     }
 
+    function flattenMobileLocationsLink(menu) {
+        qsa('.hs-menu-wrapper > ul > .menu-item.has-submenu', menu).forEach(function (item) {
+            var link = item.querySelector(':scope > a.menu-item--link[title="Locations"]');
+            if (!link) return;
+
+            item.classList.remove('has-submenu', 'active');
+
+            var trigger = item.querySelector(':scope > .child-trigger');
+            var submenu = item.querySelector(':scope > .submenu-wrapper');
+            if (trigger) trigger.remove();
+            if (submenu) submenu.remove();
+        });
+    }
+
     function onChildTriggerClick(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -75,6 +89,8 @@
             bound = true;
 
             if (menu.style.display !== 'block') menu.style.display = 'none';
+
+            flattenMobileLocationsLink(menu);
 
             trigger.addEventListener('click', function (e) {
                 e.preventDefault();
