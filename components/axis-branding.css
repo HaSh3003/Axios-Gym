@@ -1021,13 +1021,37 @@ header > .container {
     padding: 0 0 48px;
 }
 
+/* Transformation videos — portrait row */
+.axis-results-video-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto 32px;
+    padding: 0 8px;
+}
+
+@media (max-width: 991px) {
+    .axis-results-video-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .axis-results-video-grid {
+        gap: 10px;
+        padding: 0 4px;
+    }
+}
+
 /* Portrait video (9:16) — framed player */
 .axis-transformations-section .axis-results-video.gym-video-responsive,
 .axis-reviews-band--results .axis-results-video.gym-video-responsive {
     position: relative;
     width: 100%;
-    max-width: min(380px, 82vw);
-    margin: 0 auto 32px;
+    max-width: none;
+    margin: 0;
     padding-top: 0 !important;
     aspect-ratio: 9 / 16;
     height: auto;
@@ -1087,13 +1111,6 @@ header > .container {
     border-radius: 20px;
     object-fit: cover;
     z-index: 1;
-}
-
-@media (min-width: 768px) {
-    .axis-transformations-section .axis-results-video.gym-video-responsive,
-    .axis-reviews-band--results .axis-results-video.gym-video-responsive {
-        max-width: min(400px, 36vw);
-    }
 }
 
 .axis-transformation-grid {
