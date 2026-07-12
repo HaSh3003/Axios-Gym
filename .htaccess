@@ -1,0 +1,9 @@
+# Redirect legacy GymNation URLs to AXIS paths
+RedirectMatch 301 ^/gymnationfaqs/?(.*)$ /axis-faqs/$1
+RedirectMatch 301 ^/contact-gymnation/?(.*)$ /contact-axis/$1
+RedirectMatch 301 ^/gymnationclasstimetable/?(.*)$ /axis-class-timetable/$1
+RedirectMatch 301 ^/gymnationsignature/?(.*)$ /axis-signature/$1
+RedirectMatch 301 ^/gymnationondemand/?(.*)$ /axis-on-demand/$1
+RedirectMatch 301 ^/gymnation-member-rewards/?(.*)$ /axis-member-rewards/$1
+RedirectMatch 301 ^/gymnationpartners/?(.*)$ /axis-partners/$1
+RedirectMatch 301 ^/jobs-at-gymnation/?(.*)$ /jobs-at-axis/$1
